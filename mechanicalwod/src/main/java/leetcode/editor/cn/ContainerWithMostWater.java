@@ -52,13 +52,61 @@ package leetcode.editor.cn;
 public class ContainerWithMostWater{
     public static void main(String[] args) {
         Solution solution = new ContainerWithMostWater().new Solution();
-        
+        int[] source = new int[]{1,8,6,2,5,4,8,3,7};
+        System.out.println(solution.maxArea(source));
     }
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+
+    /**
+     * 双指针法
+     *
+     * @param height
+     * @return
+     */
     public int maxArea(int[] height) {
-        return 0;
+        int maxArea = 0;
+        for (int i = 0, j = height.length - 1; i < j; ) {
+            int curArea = Math.min(height[i], height[j]) * (j - i);
+            maxArea = Math.max(maxArea, curArea);
+            if(height[i] < height[j]) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return maxArea;
+    }
+
+    /**
+     * 暴力破解法
+     *
+     * @param height
+     * @return
+     */
+    public int maxAreaMethod01(int[] height) {
+        int maxArea = 0;
+        for (int i = 0; i < height.length - 1; i++) {
+            for (int j = i + 1; j < height.length; j++) {
+                int curArea = calcArea(i, j, height);
+                if (curArea > maxArea) {
+                    maxArea = curArea;
+                }
+            }
+        }
+        return maxArea;
+    }
+
+    private int calcArea(int i, int j, int[] height) {
+        int  length = j - i;
+        int width = 0;
+        if (height[i] > height[j]) {
+            width = height[j];
+        } else {
+            width = height[i];
+        }
+        return length * width;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
